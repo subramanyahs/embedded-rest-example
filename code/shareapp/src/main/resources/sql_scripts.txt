@@ -8,10 +8,10 @@ create table users (
 	otp varchar(255)
 );
 
-Insert into users (phoneNumber,userStatus,createdDate,otp) values ('9880320999','ACTIVE','2018-01-01 23:03:20','1234');
-Insert into users (phoneNumber,userStatus,createdDate,otp) values ('9880320998','ACTIVE','2018-01-01 23:03:20','1234');
-Insert into users (phoneNumber,userStatus,createdDate,otp) values ('9880320997','ACTIVE','2018-01-01 23:03:20','1234');
-Insert into users (phoneNumber,userStatus,createdDate,otp) values ('9880320996','ACTIVE','2018-01-01 23:03:20','1234');
+Insert into users (phoneNumber,userStatus,createdDate,otp) values ('123456789','ACTIVE','2018-01-01 23:03:20','1234');
+Insert into users (phoneNumber,userStatus,createdDate,otp) values ('123456788','ACTIVE','2018-01-01 23:03:20','1234');
+Insert into users (phoneNumber,userStatus,createdDate,otp) values ('123456787','ACTIVE','2018-01-01 23:03:20','1234');
+Insert into users (phoneNumber,userStatus,createdDate,otp) values ('123456786','ACTIVE','2018-01-01 23:03:20','1234');
 
 create table groups (
 	ident int primary key
