@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="Subbu">
+    <link rel="icon" href="image/favicon.ico">
+
+    <title>Signin to ShareApp</title>
+   <!-- Latest compiled and minified CSS -->
+   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+   <!-- Optional theme -->
+   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+   <!-- Latest compiled and minified JavaScript -->
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <!-- Custom styles for this template -->
+    <link href="css/app.css" rel="stylesheet">
+    <script>
+     $(function(){
+	      $("#signInBtn").click(function () {
+			var mob =  $('#inputMobile').val();
+
+	    	$.ajax({
+	            url: "/rest/login",
+	            type: 'POST',
+	            data:  JSON.stringify({mobile:mob}),
+	            dataType: 'json',
+	            contentType:"application/json; charset=utf-8",
+	            success: function(res) {
+
+	                if (res.code == 1000){
+						//goto report
+						var userId = res.userId;
+						$('#loginDiv').hide();
+						$('#reportDiv').show();
+						//do ajax to get report
+						$.ajax({
+								url: "/rest/reports?userId="+userId,
+								type: 'GET',
+								dataType: 'json',
+								contentType:"application/json; charset=utf-8",
+								success: function(resRep) {
+									console.log(resRep);
+									var outString="";
+									$.each(resRep, function(i, val){
+										var contentArray = resRep[i];
+										console.log(contentArray);
+								    	outString += '<tr><td>'+contentArray["eventName"]+'</td><td class="text-center">'+contentArray["totalCost"]+'</td><td class="text-center">'+contentArray["toPay"]+'</td><td class="text-center">'+contentArray["expenseStatus"]+'</td></tr>';
+									});
+
+									$('#dataFromJson').html(outString);
+								}
+						});
+	                }else{
+	                   alert(res.message);
+	                }
+	            }
+        });
+    });
+    });
+    </script>
+  </head>
+
+  <body>
+
+    <div class="container" id="loginDiv">
+
+      <form class="form-signin">
+        <h2 class="form-signin-heading">Please sign in</h2>
+        <label for="inputMobile" class="sr-only">Mobile Number</label>
+        <input type="mobile" id="inputMobile" class="form-control" placeholder="Mobile Number" required autofocus>
+        <label for="inputOTP" class="sr-only">OTP</label>
+        <input type="OTP" id="inputOTP" class="form-control" placeholder="OTP" required>
+
+        <button class="btn btn-lg btn-primary btn-block" type="button" id="signInBtn">Sign in</button>
+      </form>
+
+    </div> <!-- /container -->
+	<div class="container" id="reportDiv" style="display:none">
+		<h2>Events</h2>
+		<div class="near_by_hotel_wrapper">
+		<div class="near_by_hotel_container">
+		  <table class="table no-border custom_table dataTable no-footer dtr-inline">
+		    <colgroup>
+		    <col width="40%">
+		    <col width="20%">
+		    <col width="">
+		    </colgroup>
+		    <thead>
+		      <tr>
+		        <th>Event Name</th>
+		        <th class="text-center">Total Cost</th>
+		        <th class="text-center">I owe</th>
+				<th class="text-center">Payment Status</th>
+		      </tr>
+		    </thead>
+		    <tbody id="dataFromJson">
+
+		    </tbody>
+		  </table>
+		</div>
+	</div>
+    </div> <!-- /container -->
+  </body>
+</html>
